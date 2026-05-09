@@ -1,0 +1,216 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CPS Online Quiz System Poster
+% Based on standard academic poster templates (Beamerposter)
+% Optimized for Overleaf
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[final]{beamer}
+
+% ==================== PACKAGES ====================
+\usepackage[size=a1,orientation=landscape,scale=1.4]{beamerposter} 
+%\usetheme{gemini} % If gemini theme is not available, standard beamer works, but we will style manually below to ensure it runs without external theme files.
+\usecolortheme{beaver} % Red/Grey theme (Clean academic look)
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{anyfontsize}
+\usepackage{tcolorbox}
+\usepackage{palatino} % Professional font
+
+% ==================== MANUAL STYLING (To ensure it looks like the reference) ====================
+% Define colors similar to the CCGRID poster (Blue/Grey/White)
+\definecolor{VUblue}{RGB}{26, 59, 92} % Dark Blue header
+\definecolor{VUgold}{RGB}{255, 204, 0} % Accent
+\definecolor{BlockBG}{RGB}{255, 255, 255}
+\definecolor{BlockTitle}{RGB}{26, 59, 92}
+
+\setbeamercolor{headline}{bg=VUblue,fg=white}
+\setbeamercolor{footline}{bg=VUblue,fg=white}
+\setbeamercolor{title in headline}{fg=white}
+\setbeamercolor{author in headline}{fg=white}
+\setbeamercolor{institute in headline}{fg=lightgray}
+
+% Style the blocks to look like the uploaded reference
+\setbeamercolor{block title}{bg=VUblue,fg=white}
+\setbeamercolor{block body}{bg=white,fg=black}
+\setbeamertemplate{block begin}{
+  \begin{tcolorbox}[colback=white,colframe=VUblue,arc=4pt,title=\insertblocktitle, boxrule=1mm, titlerule=0mm, toptitle=2mm, bottomtitle=2mm]
+}
+\setbeamertemplate{block end}{\end{tcolorbox}\vspace{1cm}}
+
+% ==================== METADATA ====================
+\title{\huge Online Quiz System: A Java OOP Implementation}
+\author{\large Hanwen Zhang (1308159) \& Zimo Qin}
+\institute{\large Wenzhou-Kean University | CPS 2231 W02}
+\date{\today}
+
+% ==================== DOCUMENT ====================
+\begin{document}
+\begin{frame}[t]
+
+% --- HEADER ---
+\begin{beamercolorbox}[wd=\paperwidth]{headline}
+  \begin{columns}[T]
+    \begin{column}{.02\paperwidth}\end{column}
+    \begin{column}{.70\paperwidth}
+      \vskip2cm
+      \centering
+      \usebeamerfont{title in headline}{\textbf{\huge Online Quiz System: A Java OOP Implementation}}\\[1ex]
+      \usebeamerfont{author in headline}{\large Hanwen Zhang (1308159) \& Zimo Qin | CPS 2231 W02}\\[1ex]
+      \usebeamerfont{institute in headline}{Wenzhou-Kean University}\\[1cm]
+    \end{column}
+    \begin{column}{.25\paperwidth}
+      \vskip1.5cm
+      % PLACEHOLDER FOR UNIVERSITY LOGO
+      % \includegraphics[width=0.7\linewidth]{logo.png} 
+      \begin{tikzpicture}
+        \node[draw=white, text=white, very thick, inner sep=10pt] {\LARGE LOGO HERE};
+      \end{tikzpicture}
+      \vskip1cm
+    \end{column}
+    \begin{column}{.02\paperwidth}\end{column}
+  \end{columns}
+\end{beamercolorbox}
+
+% --- COLUMNS ---
+\begin{columns}[T]
+
+  % ==================== COLUMN 1 ====================
+  \begin{column}{.32\paperwidth}
+    
+    \begin{block}{1. System Overview}
+      This project presents a robust **Online Quiz System** built using Java Object-Oriented Programming (OOP) principles. The system encapsulates question display, answer verification, and input validation into a modular architecture.
+      
+      \begin{itemize}
+          \item \textbf{Core Philosophy:} Designed using abstract classes, inheritance, and method overriding to ensure extensibility.
+          \item \textbf{Key Functionality:} Manages the full quiz process, including input detection, score calculation, and result display.
+      \end{itemize}
+    \end{block}
+
+    \begin{block}{2. System Architecture}
+      The application follows a hierarchical class structure centered around the abstract \texttt{Question} class.
+      
+      \vspace{0.5cm}
+      
+      % --- DIAGRAM PLACEHOLDER (Use actual UML image here) ---
+      \begin{center}
+      \begin{tikzpicture}
+        % Simple UML Representation drawn in LaTeX
+        \node (Abstract) [draw, rectangle, fill=blue!10, text width=6cm, align=center] {\textbf{<<Abstract>>}\\ Question\\ \textit{+ checkAnswer()}};
+        \node (MC) [draw, rectangle, below left of=Abstract, node distance=5cm, xshift=-2cm, text width=4cm, align=center] {MultipleChoice\\ Question};
+        \node (TF) [draw, rectangle, below right of=Abstract, node distance=5cm, xshift=2cm, text width=4cm, align=center] {TrueFalse\\ Question};
+        \node (Manager) [draw, rectangle, fill=green!10, above of=Abstract, node distance=4cm, text width=6cm, align=center] {\textbf{QuizManager}\\ \textit{Input Validation \& Scheduling}};
+        
+        \draw[->, thick] (MC) -- (Abstract);
+        \draw[->, thick] (TF) -- (Abstract);
+        \draw[dashed, thick] (Manager) -- (Abstract);
+      \end{tikzpicture}
+      \end{center}
+      \vspace{0.5cm}
+
+      \textbf{Components:}
+      \begin{itemize}
+          \item \textbf{Inheritance Tree:} \texttt{MultipleChoice} and \texttt{TrueFalse} inherit from \texttt{Question}.
+          \item \textbf{Management:} \texttt{QuizManager} schedules the interaction between \texttt{Student} entities and question logic.
+      \end{itemize}
+    \end{block}
+
+  \end{column}
+
+  % ==================== COLUMN 2 ====================
+  \begin{column}{.32\paperwidth}
+
+    \begin{block}{3. Implementation Details}
+      \textbf{The Abstract Question Class} serves as the blueprint for all question types.
+      
+      \vspace{0.5em}
+      \textbf{Polymorphism in Action:}
+      \begin{itemize}
+          \item \textbf{Multiple Choice:} Overrides \texttt{display()} to automatically generate A/B/C/D options using character offsets.
+          \item \textbf{True/False:} Implements strict logic where "A" maps to True and "B" maps to False.
+      \end{itemize}
+
+      \vspace{1em}
+      \begin{tcolorbox}[colback=gray!10, title=Code Snippet: Polymorphism]
+\begin{verbatim}
+// Abstract Definition
+public abstract boolean checkAnswer(String input);
+
+// Implementation in TrueFalseQuestion
+@Override
+public boolean checkAnswer(String answer) {
+    // Validates A/B input logic
+    return answer.equalsIgnoreCase(correctAnswer);
+}
+\end{verbatim}
+      \end{tcolorbox}
+    \end{block}
+
+    \begin{block}{4. Workflow Diagram}
+      The system ensures valid data entry through a cyclical check within \texttt{QuizManager}.
+      
+      \vspace{1cm}
+      % --- FLOWCHART PLACEHOLDER ---
+      \begin{center}
+      \begin{tikzpicture}[node distance=2.5cm]
+        \node (start) [draw, circle, fill=green!20] {Start};
+        \node (input) [draw, rectangle, below of=start] {User Input};
+        \node (validate) [draw, diamond, aspect=2, below of=input] {Valid Format?};
+        \node (error) [draw, rectangle, right of=validate, xshift=2cm, fill=red!10] {Throw Exception};
+        \node (process) [draw, rectangle, below of=validate] {Process Answer};
+        
+        \draw[->] (start) -- (input);
+        \draw[->] (input) -- (validate);
+        \draw[->] (validate) -- node[right] {No} (error);
+        \draw[->] (error) |- (input);
+        \draw[->] (validate) -- node[left] {Yes} (process);
+      \end{tikzpicture}
+      \end{center}
+      \vspace{0.5cm}
+      
+      \textit{Figure 2: The logic flow for handling student input and exceptions.}
+    \end{block}
+
+  \end{column}
+
+  % ==================== COLUMN 3 ====================
+  \begin{column}{.32\paperwidth}
+
+    \begin{block}{5. Robustness \& Validation}
+       A critical feature is the \texttt{validateInput} mechanism within the \texttt{QuizManager}.
+       
+       \begin{itemize}
+           \item \textbf{Exception Handling:} Uses \texttt{InvalidInputException} to handle erroneous user data.
+           \item \textbf{Empty Input:} Rejects empty strings immediately to prevent null pointers.
+           \item \textbf{Type Checking:} For True/False questions, inputs other than "A" or "B" (case-insensitive) trigger a retry loop.
+           \item \textbf{Thread Safety:} The \texttt{Student} class uses the \texttt{synchronized} keyword for \texttt{addScore}, enabling future expansion to multi-threaded environments.
+       \end{itemize}
+    \end{block}
+
+    \begin{block}{6. Conclusion}
+      We successfully implemented an OOP-based Quiz System that prioritizes modularity and error resilience.
+      
+      \vspace{0.5em}
+      \textbf{Key Achievements:}
+      \begin{itemize}
+          \item \textbf{Reliability:} Secured via custom exception handling.
+          \item \textbf{Scalability:} Abstract design allows easy addition of new question types (e.g., Fill-in-Blank) without breaking existing code.
+          \item \textbf{Maintainability:} Clear separation of logic (\texttt{Question}), data (\texttt{Student}), and control (\texttt{QuizManager}).
+      \end{itemize}
+    \end{block}
+
+    \begin{block}{References}
+      \small
+      \begin{enumerate}
+          \item Horstmann, C. S. (2018). \textit{Core Java Volume I--Fundamentals}. Prentice Hall.
+          \item Oracle Documentation. (2023). \textit{Java Platform, Standard Edition & Java Development Kit Version 17 API Specification}.
+      \end{enumerate}
+    \end{block}
+
+  \end{column}
+
+\end{columns}
+\end{frame}
+\end{document}
